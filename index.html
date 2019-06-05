@@ -98,9 +98,8 @@
 
     }
 
-    function clearDom() {
-        document.getElementById("question").textContent = questionsList[questionsIndex].question;
-
+    function clearAnswerDetail() {
+        $(".answer-detail").remove()
     }
 
     //generate question along with picture
@@ -164,6 +163,7 @@
             questionsIndex++
             questionsCorrect++
             generateQuestion()
+            clearAnswerDetail()
             generateAnswers()
         } else {
             //i should remove an answer when clicked
@@ -177,6 +177,9 @@
 // i should change the to string method structure 
 // to an array index location comparison instead
 // use indexof to compare input
+// UPDATE: line 151 is updated
+
+
 
 
 </script>
