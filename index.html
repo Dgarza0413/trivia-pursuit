@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<style>
+    .answer-detail {
+        margin: 0% 25%;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .answer-detail:hover {
+        transition: .4s ease-out;
+        background-color: cyan;
+    }
+
+    #img-display {
+        height: 50px;
+        width: 100%;
+        background-color: grey;
+    }
+
+    #questions-box {
+        height: 250px;
+        width: 100%;
+        background-color: grey;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="timer"></div>
+
+    <div id="questions-box">
+        <div id="img-display"></div>
+        <div id="question"></div>
+        <div id="hint"></div>
+        <div id="answer-box"></div>
+    </div>
+</body>
+<script>
+    var timer = 0;
+    var points = 0;
+    var questionsCorrect = 0;
+    var questionsIncorrect = 0;
+    var questionsIndex = 0;
+    var arrayIndex = 0
+
+    // use indexOf() to match correct choice to answerChoices
+
+    var questionsList = [{
+        question: "What causes the sky to turn blue",
+        answerChoices: ["oxygen", "clouds", "ultra violet light", "rayleigh scattering"],
+        correctChoice: 4,
+        picture: "https://images.unsplash.com/photo-1504194067793-7621b2f43e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+        questionHint: "This is the hint:"
+    },
+    {
+        question: "What is the physical state of Earth's inner core",
+        answerChoices: ["liquid", "gas", "plasma", "solid"],
+        correctChoice: "solid",
+        picture: "url",
+        questionHint: "This is the hint:"
+    },
+    {
+        question: "Name this monumental location",
+        answerChoices: ["easter island", "Tahiti", "Samoa", "Hawaii"],
+        correctChoice: "easter island",
+        picture: "url",
+        questionHint: "This is the hint:"
+    }, {
+        question: "Name this location",
+        answerChoices: ["paris", "london", "berlin", "madrid"],
+        correctChoice: 2,
+        picture: "url",
+        questionHint: "This is the hint:"
+    },
+    ]
+    // console.log(questionsList[0].question)
+    // console.log(questionsList[0].answerChoices[0])
+    // console.log(questionsList[0].correctChoice)
+    // console.log(typeof correctChoice)
+
+    //i will need a function to remove or clear the dom before another set is called
+    //this should be different from end game
+    generateQuestion()
+    generateAnswers()
+
+    function startGame() {
+
+    }
+
+    function clearDom() {
+        document.getElementById("question").textContent = questionsList[questionsIndex].question;
+
+    }
+
+    //generate question along with picture
+    function generateQuestion() {
+        document.getElementById("img-display").textContent = questionsList[questionsIndex].picture;
+        document.getElementById("question").textContent = questionsList[questionsIndex].question;
+        // document.getElementById("answer-box").textContent = questionsList[questionsIndex].answerChoices;
+    }
+
+    //maybe a loop to only generate the answers list
+    //do a for loop to generate the questions js or jquery????
+    //this loop will fire to generate the answerslist but not select the
+    //question
+    function generateAnswers() {
+        for (var i = 0; i < 4; i++) {
+            var answerSelectList = questionsList[questionsIndex].answerChoices[i]
+            var correctChoice = questionsList[questionsIndex].correctChoice
+            var answerSelect = $("<div>");
+            var picture = $("<img>");
+
+            answerSelect.addClass("answer-detail")
+            $("#answer-box").append(answerSelect)
+
+            //print answerList with attr
+            $("#answer-detail").addClass("name")
+            $("#answer-detail").attr("answer-select", answerSelectList)
+
+            //test
+            $("#answer-detail").attr("answer-index", correctChoice)
+
+            //
+            answerSelect.attr("answer-select", answerSelectList)
+
+            //test
+            answerSelect.attr("answer-detail", correctChoice)
+            answerSelect.text(answerSelectList)
+
+            console.log(answerSelectList)
+            // console.log(questionsList[i])
+            // console.log(questionsList[i].answerChoices)
+        }
+    }
+
+    // generateQuestion()
+    // generateAnswers()
+
+    //i need an onclick function to select a partically answer to compare 
+    //with the answer
+    //a counter to keep track of questions is needed
+    $(".answer-detail").on("click", function () {
+        var correct = questionsList[questionsIndex].correctChoice
+        console.log("this is the correct variable" + correct)
+        console.log("A button has been clicked")
+        console.log($(this).attr("answer-select"))
+        console.log(questionsList[questionsIndex].correctChoice)
+        if ($(this).attr("answer-select") === correct) {
+            console.log("This is the correct answer")
+            //increase the questionsIndex
+            questionsIndex++
+            questionsCorrect++
+            generateQuestion()
+            generateAnswers()
+        } else {
+            //i should remove an answer when clicked
+            //and/or remove a life
+            console.log("try again")
+        }
+    })
+
+// notes
+// line 151
+// i should change the to string method structure 
+// to an array index location comparison instead
+
+
+</script>
+
+</html>
