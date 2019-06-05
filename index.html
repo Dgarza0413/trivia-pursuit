@@ -37,7 +37,7 @@
 
 <body>
     <div id="timer"></div>
-
+    <div id="msg-box"></div>
     <div id="questions-box">
         <div id="img-display"></div>
         <div id="question"></div>
@@ -46,138 +46,185 @@
     </div>
 </body>
 <script>
-    var timer = 0;
-    var points = 0;
-    var questionsCorrect = 0;
-    var questionsIncorrect = 0;
-    var questionsIndex = 0;
-    var arrayIndex = 0
+    $(document).ready(function () {
+        console.log("ready!");
 
-    // use indexOf() to match correct choice to answerChoices
 
-    var questionsList = [{
-        question: "What causes the sky to turn blue",
-        answerChoices: ["oxygen", "clouds", "ultra violet light", "rayleigh scattering"],
-        // correctChoice: "rayleigh scattering",
-        correctChoice: 4,
-        picture: "https://images.unsplash.com/photo-1504194067793-7621b2f43e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-        questionHint: "This is the hint:"
-    },
-    {
-        question: "What is the physical state of Earth's inner core",
-        answerChoices: ["liquid", "gas", "plasma", "solid"],
-        correctChoice: "solid",
-        picture: "url",
-        questionHint: "This is the hint:"
-    },
-    {
-        question: "Name this monumental location",
-        answerChoices: ["easter island", "Tahiti", "Samoa", "Hawaii"],
-        correctChoice: "easter island",
-        picture: "url",
-        questionHint: "This is the hint:"
-    }, {
-        question: "Name this location",
-        answerChoices: ["paris", "london", "berlin", "madrid"],
-        correctChoice: 2,
-        picture: "url",
-        questionHint: "This is the hint:"
-    },
-    ]
-    // console.log(questionsList[0].question)
-    // console.log(questionsList[0].answerChoices[0])
-    // console.log(questionsList[0].correctChoice)
-    // console.log(typeof correctChoice)
 
-    //i will need a function to remove or clear the dom before another set is called
-    //this should be different from end game
-    generateQuestion()
-    generateAnswers()
+        var timer = 0;
+        var points = 0;
+        var questionsCorrect = 0;
+        var questionsIncorrect = 0;
+        var questionsIndex = 0;
+        var arrayIndex = 0
 
-    function startGame() {
+        var seconds = Math.floor()
 
-    }
+        // use indexOf() to match correct choice to answerChoices
 
-    function clearAnswerDetail() {
-        $(".answer-detail").remove()
-    }
+        var questionsList = [{
+            question: "What causes the sky to turn blue",
+            answerChoices: ["oxygen", "clouds", "ultra violet light", "rayleigh scattering"],
+            correctChoice: 4,
+            picture: "https://images.unsplash.com/photo-1504194067793-7621b2f43e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+            questionHint: "This is the hint:"
+        },
+        {
+            question: "What is the physical state of Earth's inner core",
+            answerChoices: ["liquid", "gas", "solid", "plasma"],
+            correctChoice: 3,
+            picture: "question 2 url",
+            questionHint: "This is the hint:"
+        },
+        {
+            question: "Name this monumental location",
+            answerChoices: ["easter island", "Tahiti", "Samoa", "Hawaii"],
+            correctChoice: 1,
+            picture: "url",
+            questionHint: "This is the hint:"
+        }, {
+            question: "Name this location",
+            answerChoices: ["paris", "london", "berlin", "madrid"],
+            correctChoice: 2,
+            picture: "url",
+            questionHint: "This is the hint:"
+        },
+        ]
+        // console.log(questionsList[0].question)
+        // console.log(questionsList[0].answerChoices[0])
+        // console.log(questionsList[0].correctChoice)
+        // console.log(typeof correctChoice)
 
-    //generate question along with picture
-    function generateQuestion() {
-        document.getElementById("img-display").textContent = questionsList[questionsIndex].picture;
-        document.getElementById("question").textContent = questionsList[questionsIndex].question;
-        // document.getElementById("answer-box").textContent = questionsList[questionsIndex].answerChoices;
-    }
+        //i will need a function to remove or clear the dom before another set is called
+        //this should be different from end game
+        // generateQuestion()
+        // generateAnswers()
+        startGame()
+        setTimer()
+        onClick()
 
-    //maybe a loop to only generate the answers list
-    //do a for loop to generate the questions js or jquery????
-    //this loop will fire to generate the answerslist but not select the
-    //question
-    function generateAnswers() {
-        for (var i = 0; i < 4; i++) {
-            var answerSelectList = questionsList[questionsIndex].answerChoices[i]
-            var correctChoice = questionsList[questionsIndex].correctChoice
-            var correctNum = 0
-            var answerSelect = $("<div>");
-            var picture = $("<img>");
 
-            answerSelect.addClass("answer-detail")
-            $("#answer-box").append(answerSelect)
-
-            //print answerList with attr
-            $("#answer-detail").addClass("name")
-            $("#answer-detail").attr("answer-select", answerSelectList)
-
-            //test
-            $("#answer-detail").attr("answer-index", correctChoice)
-
-            //
-            answerSelect.attr("answer-select", answerSelectList)
-
-            //test
-            answerSelect.attr("answer-detail", [i])
-            answerSelect.text(answerSelectList)
-
-            console.log(answerSelectList)
-            // console.log(questionsList[i])
-            // console.log(questionsList[i].answerChoices)
-        }
-    }
-
-    // generateQuestion()
-    // generateAnswers()
-
-    //i need an onclick function to select a partically answer to compare 
-    //with the answer
-    //a counter to keep track of questions is needed
-    $(".answer-detail").on("click", function () {
-        var correct = questionsList[questionsIndex].correctChoice
-        var list = questionsList[questionsIndex].answerChoices
-        console.log("this is the correct variable" + correct)
-        console.log($(this).attr("answer-detail"))
-        console.log(questionsList[questionsIndex].correctChoice)
-        // if ($(this).attr("answer-select") === correct) 
-        if (parseInt($(this).attr("answer-detail")) === (parseInt(correct) - 1)) {
-            console.log("This is the correct answer")
-            //increase the questionsIndex
-            questionsIndex++
-            questionsCorrect++
+        function startGame() {
             generateQuestion()
-            clearAnswerDetail()
             generateAnswers()
-        } else {
-            //i should remove an answer when clicked
-            //and/or remove a life
-            console.log("try again")
         }
-    })
+
+        //create a function to display a timer
+        function setTimer() {
+            document.getElementById("timer").textContent = timer;
+        }
+
+        function clearAnswerDetail() {
+            $(".answer-detail").remove()
+        }
+
+        //generate question along with picture
+        function generateQuestion() {
+            document.getElementById("img-display").textContent = questionsList[questionsIndex].picture;
+            document.getElementById("question").textContent = questionsList[questionsIndex].question;
+            // document.getElementById("answer-box").textContent = questionsList[questionsIndex].answerChoices;
+
+        }
+
+        //maybe a loop to only generate the answers list
+        //do a for loop to generate the questions js or jquery????
+        //this loop will fire to generate the answerslist but not select the
+        //question
+        //added a 
+        function generateAnswers() {
+            for (var i = 0; i < 4; i++) {
+                var answerSelectList = questionsList[questionsIndex].answerChoices[i]
+                var correctChoice = questionsList[questionsIndex].correctChoice
+                // var correctNum = 0
+                var answerSelect = $("<div>");
+                // var picture = $("<img>");
+
+                answerSelect.addClass("answer-detail")
+                $("#answer-box").append(answerSelect)
+
+                //print answerList with attr
+                $("#answer-detail").addClass("name")
+                $("#answer-detail").attr("answer-select", answerSelectList)
+
+                //test
+                $("#answer-detail").attr("answer-index", correctChoice)
+
+                //
+                answerSelect.attr("answer-select", answerSelectList)
+
+                //test
+                answerSelect.attr("answer-detail", [i])
+                answerSelect.text(answerSelectList)
+
+                console.log(answerSelectList)
+            }
+            onClick()
+        }
+
+        // generateQuestion()
+        // generateAnswers()
+
+        //i need an onclick function to select a partically answer to compare 
+        //with the answer
+        //a counter to keep track of questions is needed
+
+        //function??
+        function onClick() {
+            $(".answer-detail").on("click", function () {
+                var correct = questionsList[questionsIndex].correctChoice
+                var list = questionsList[questionsIndex].answerChoices
+                // console.log("this is the correct variable" + correct)
+                // console.log($(this).attr("answer-detail"))
+                // console.log(questionsList[questionsIndex].correctChoice)
+                // if ($(this).attr("answer-select") === correct) 
+                if (parseInt($(this).attr("answer-detail")) === (parseInt(correct) - 1)) {
+                    console.log("This is the correct answer")
+                    //increase the questionsIndex
+                    questionsIndex++
+                    questionsCorrect++
+                    // debugger
+                    clearAnswerDetail()
+                    // debugger
+                    // generateQuestion()
+                    // debugger
+                    // generateAnswers()
+                    startGame()
+                    console.log(questionsList[questionsIndex])
+                    console.log(questionsList[questionsIndex].correctChoice)
+                    console.log(questionsIndex)
+                    console.log(questionsCorrect)
+
+                    // else if to determine game finished.
+                } else if (questionsIndex > questionsList.length) {
+                    console.log("GAME COMPLETE")
+                    document.getElementById("msg-box").textContent = "GAME COMPLETE"
+
+                } else {
+                    //i should remove an answer when clicked
+                    //and/or remove a life
+                    $(this).slideUp()
+                    console.log(questionsList[questionsIndex].correctChoice)
+
+                    console.log("try again")
+                }
+            })
+        }
+
+    });
 
 // notes
 // line 151
 // i should change the to string method structure 
 // to an array index location comparison instead
 // use indexof to compare input
-// UPDATE: line 151 is updated
+// UPDATE: line 151 is updated 8:12pm
+
+//line 116
+// i am concerned that within the answer generator 
+//it throws away the ability to selector items
+// i am thinking this is a positioning of the functions 
+// that prevents this from happening
+// UPDATE: line 116 was solved by placing the onclick in the for loop
 
 
 
