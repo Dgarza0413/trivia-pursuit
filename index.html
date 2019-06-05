@@ -58,6 +58,7 @@
     var questionsList = [{
         question: "What causes the sky to turn blue",
         answerChoices: ["oxygen", "clouds", "ultra violet light", "rayleigh scattering"],
+        // correctChoice: "rayleigh scattering",
         correctChoice: 4,
         picture: "https://images.unsplash.com/photo-1504194067793-7621b2f43e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
         questionHint: "This is the hint:"
@@ -117,6 +118,7 @@
         for (var i = 0; i < 4; i++) {
             var answerSelectList = questionsList[questionsIndex].answerChoices[i]
             var correctChoice = questionsList[questionsIndex].correctChoice
+            var correctNum = 0
             var answerSelect = $("<div>");
             var picture = $("<img>");
 
@@ -134,7 +136,7 @@
             answerSelect.attr("answer-select", answerSelectList)
 
             //test
-            answerSelect.attr("answer-detail", correctChoice)
+            answerSelect.attr("answer-detail", [i])
             answerSelect.text(answerSelectList)
 
             console.log(answerSelectList)
@@ -151,11 +153,12 @@
     //a counter to keep track of questions is needed
     $(".answer-detail").on("click", function () {
         var correct = questionsList[questionsIndex].correctChoice
+        var list = questionsList[questionsIndex].answerChoices
         console.log("this is the correct variable" + correct)
-        console.log("A button has been clicked")
-        console.log($(this).attr("answer-select"))
+        console.log($(this).attr("answer-detail"))
         console.log(questionsList[questionsIndex].correctChoice)
-        if ($(this).attr("answer-select") === correct) {
+        // if ($(this).attr("answer-select") === correct) 
+        if (parseInt($(this).attr("answer-detail")) === (parseInt(correct) - 1)) {
             console.log("This is the correct answer")
             //increase the questionsIndex
             questionsIndex++
@@ -173,6 +176,7 @@
 // line 151
 // i should change the to string method structure 
 // to an array index location comparison instead
+// use indexof to compare input
 
 
 </script>
