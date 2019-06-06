@@ -17,6 +17,26 @@
         color: white;
     }
 
+    h1 {
+        text-align: center;
+        font-size: 50px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 26px;
+        border: 3px solid #ffffff;
+        border-radius: 25px;
+        color: white;
+        background-color: #5C80BC;
+    }
+
+    button:hover {
+        transition: .4s ease-out;
+        color: #5C80BC;
+        background-color: #ffffff;
+    }
+
     .answer-detail {
         text-align: center;
         margin: 2vh 20vw;
@@ -31,6 +51,30 @@
         transition: .4s ease-out;
         color: #5C80BC;
         background-color: #ffffff;
+    }
+
+    .correct-question {
+        background-color: green;
+        border: 3px solid green;
+        border-radius: 25px;
+        text-align: center;
+        margin: 2vh 20vw;
+        padding: 10px;
+        font-size: 26px;
+    }
+
+    .correct-question:hover {
+        background-color: green;
+        border: 3px solid green;
+        border-radius: 25px;
+        text-align: center;
+        margin: 2vh 20vw;
+        padding: 10px;
+        font-size: 26px;
+    }
+
+    #title {
+        text-align: center;
     }
 
     #msg-box {
@@ -66,6 +110,10 @@
     <div id="msg-box"></div>
     <div id="points-box"></div>
     <div id="img-display"></div>
+    <div id="title">
+        <h1>TRIVIA</h1>
+        <button>Start Game</button>
+    </div>
     <div id="questions-box">
         <div id="question"></div>
         <div id="hint"></div>
@@ -107,64 +155,103 @@
         questionHint: "This is the hint:"
     },
     {
-        question: "Name this monumental location",
-        answerChoices: ["easter island", "Tahiti", "Samoa", "Hawaii"],
+        question: "What part of the body produces red blood cells",
+        answerChoices: ["Bone Marrow", "Heart", "Liver", "Lungs"],
         correctChoice: 1,
         media: "url",
         questionHint: "This is the hint:"
     }, {
-        question: "Name this location",
-        answerChoices: ["paris", "london", "berlin", "madrid"],
+        question: "What type of rock is obsidian",
+        answerChoices: ["siliciclastic", "igneous", "sedimentary", "metamorphic"],
         correctChoice: 2,
         media: "url",
         questionHint: "This is the hint:"
     },
     ]
 
-    //i will need a function to remove or clear the dom before another set is called
-    //this should be different from end game
-    startQuestion()
+    //a function to remove or clear the dom before another set is called
+    // setTimeout()
+    // startQuestion()
+    gameStart()
     onClick()
+
+    function gameStart() {
+        $("button").on("click", function () {
+            gameOn = false;
+            if (!gameOn) {
+                $("#title").remove()
+                $("button").remove()
+                startQuestion()
+            }
+        })
+    }
+
+    function stopTimer() {
+        timerRunning = false
+        clearInterval(intervalId)
+    }
+
+    function timeoutQuestion() {
+        var correct = questionsList[questionsIndex].correctChoice
+        if ($(this).attr("data-answer-detail") != (correct - 1)) {
+        }
+    }
+
 
     function timeLimit() {
         if (!timerRunning) {
             timerRunning = true;
             intervalId = setInterval(function () {
-                timer--;
+                timer--
                 points--
                 $("#timer").html(timer)
-                if (timer === 0) {
+                if (timer <= 0) {
                     timerRunning = false;
                     questionsIncorrect++
                     questionsIndex++
-                    $("#timer").remove()
-                    $("#msg-box").html("<h1>TIMES UP</h1>")
+                    stopTimer()
+                    timeoutQuestion()
+                    // $("#timer").remove()
+                    //i want to place a correct function somewhere here
+
+                    // clearAnswerDetail()
+                    // startQuestion()
+                    // $("#msg-box").html("<h1>TIMES UP</h1>")
+                    // function()
                     //show some css to show the correct answer
-                    if (parseInt($("#answer-detail").attr("answer-index")) === (parseInt(questionsList[questionsIndex].correctChoice)) - 1) {
-                        $(this).css("background-color", "red")
-                        console.log($(this))
-                    }
                 }
             }, 1000)
         }
     }
+    function isGameOver() {
+        if (questionsIndex >= questionsList.length) {
+            $("#question").remove()
+            $("#msg-box").text("Game COMplete");
+            $("#msg-box").html("<h1>questions correct" + questionsCorrect + "<h1>");
+            $("#msg-box").append("questions incorrect" + questionsIncorrect);
+            stopTimer()
+            clearAnswerDetail()
+        }
+    }
+
+
+    ////working on this function
+    function correctQuestion() {
+        clearAnswerDetail()
+        stopTimer()
+        $("#question").hide()
+        $("#msg-box").text("CORRECT")
+        setTimeout(startQuestion, 4000)
+        // startQuestion()
+        // setInterval(generateAnswers(), 3000)
+    }
 
     function startQuestion() {
-        if (questionsIndex >= questionsList.length) {
-            debugger
-            $("#question").remove()
-            $("#timer").remove()
-            clearInterval(timer)
-            console.log("GAME COMPLETE")
-            $("#msg-box").html("Game COMplete");
-        }
-
         gameOn = false
         timer = 9;
-        generateQuestion()
+        $("#msg-box").text("")
         generateAnswers()
         timeLimit()
-
     }
 
     //create a function to display a timer
@@ -176,35 +263,27 @@
         $(".answer-detail").remove()
     }
 
-    //generate question along with picture
-    function generateQuestion() {
-        // $("#img-display").html("<img src=" + questionsList[questionsIndex].media + " width='400px'>")
-        // document.getElementById("img-display").textContent = questionsList[questionsIndex].media;
-        document.getElementById("question").textContent = questionsList[questionsIndex].question;
-        // document.getElementById("answer-box").textContent = questionsList[questionsIndex].answerChoices;
-
-    }
-
     //maybe a loop to only generate the answers list
     //do a for loop to generate the questions js or jquery????
     //this loop will fire to generate the answerslist but not select the
-    //question
-    //added a 
     function generateAnswers() {
-        gameOn = true;
+        var question = questionsList[questionsIndex].question
+        $("#question").text(question)
+        $("#question").show()
         for (var i = 0; i < 4; i++) {
             var answerSelectList = questionsList[questionsIndex].answerChoices[i]
             var correctChoice = questionsList[questionsIndex].correctChoice
             var answerSelect = $("<div>");
 
-            answerSelect.addClass("answer-detail")
+
             $("#answer-box").append(answerSelect)
             $("#answer-detail").addClass("name")
             $("#answer-detail").attr("answer-select", answerSelectList)
             $("#answer-detail").attr("answer-index", correctChoice)
 
+            answerSelect.addClass("answer-detail")
             answerSelect.attr("answer-select", answerSelectList)
-            answerSelect.attr("answer-detail", [i])
+            answerSelect.attr("data-answer-detail", [i])
             answerSelect.text(answerSelectList)
         }
         onClick()
@@ -214,48 +293,18 @@
         $(".answer-detail").on("click", function () {
             var correct = questionsList[questionsIndex].correctChoice
             var list = questionsList[questionsIndex].answerChoices
-            // if (questionsIndex === questionsList.length) {
-            //     // gameOn = false
-            //     debugger
-            //     console.log("the game is complete")
-            //     $("question").remove()
-            //     $("msg-box").text("The game is complete")
-            // } else if (parseInt($(this).attr("answer-detail")) === (parseInt(correct) - 1)) {
-            //     debugger
-            //     gameOn = false
-            //     questionsIndex++
-            //     questionsCorrect++
-            //     clearAnswerDetail()
-            //     startQuestion()
-            // } else {
-            //     $(this).slideUp()
-            // }
 
-            if (questionsIndex >= questionsList.length) {
-                // debugger
-                $("#question").remove()
-                console.log("GAME COMPLETE")
-                $("#msg-box").text("Game COMplete");
-            }
-            if (parseInt($(this).attr("answer-detail")) === (parseInt(correct) - 1)) {
-                console.log("This is the correct answer")
-                //increase the questionsIndex
+            if (parseInt($(this).attr("data-answer-detail")) === (parseInt(correct) - 1)) {
+                isGameOver()
                 questionsIndex++
                 questionsCorrect++
-                clearAnswerDetail()
-                // debugger
-                startQuestion()
-                // startGame()
-                // console.log(questionsList[questionsIndex])
-                // console.log(questionsList[questionsIndex].correctChoice)
-                // console.log(questionsIndex)
-                // console.log(questionsCorrect)
+                // $(this).addClass("correct-question")
 
-                // else if to determine game finished.
+                correctQuestion()
             }
             else {
-                //i should remove an answer when clicked
-                //and/or remove a life
+                questionsIncorrect++
+                timer = timer - 2
                 $(this).slideUp()
             }
         })
@@ -278,7 +327,7 @@
 // UPDATE: line 116 was solved by placing the onclick in the for loop
 
 //I have two issues i cannot end the game with a game complete
-//
+//UPDATE: this has been patched by placing if statement at beginning of function - reconsider placement
 //
 //second is i cannot properly set up a reset on each question
 //should i generate a button to set
@@ -291,6 +340,5 @@
 
 
 </script>
-<script src="circles.js"></script>
 
 </html>
