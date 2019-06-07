@@ -5,16 +5,14 @@ $(document).ready(function () {
     //timing variables
     var intervalId;
     var timerRunning = false;
-    var timer = 8;
-    var points = 10;
+    var timer = 20;
+    var points = 20;
     var totalPoints = 0
 
     //object variables and indexes
     var questionsCorrect = 0;
     var questionsIncorrect = 0;
     var questionsIndex = 0;
-    var arrayIndex = 0
-
 
     var questionsList = [{
         question: "The effects of the sky turning blue is explained as",
@@ -87,7 +85,6 @@ $(document).ready(function () {
     ]
 
     //a function to remove or clear the dom before another set is called
-
     gameStart()
     onClick()
 
@@ -105,8 +102,8 @@ $(document).ready(function () {
 
     function startQuestion() {
         gameOn = false
-        timer = 9;
-        points = 10;
+        timer = 20;
+        points = 20;
         $("#timer").show()
         $("#msg-box").text("")
         generateAnswers()
@@ -231,8 +228,8 @@ $(document).ready(function () {
             }
             else {
                 questionsIncorrect++
-                timer = timer - 3
-                points = points - 3
+                timer = timer - 6
+                points = points - 10
                 $(this).slideUp()
             }
         })
